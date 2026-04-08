@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.norskenn_kotlin.ui.theme.Norskenn_kotlinTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,6 +59,8 @@ class MainActivity : ComponentActivity() {
                 val error = viewModel.error.collectAsState().value
                 val currentWeather = weather
 
+                val kpIndex = viewModel.kpIndex.collectAsState().value
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -95,6 +98,14 @@ class MainActivity : ComponentActivity() {
                     } else if (error != null) {
                         Text("Error: $error", color = Color.White)
                     } else if (currentWeather != null) {
+                        Text (
+                            text = "Kp Index: $kpIndex",
+                            color = Color.White,
+                        modifier = Modifier
+                            .padding(top = 100.dp)
+                            .align(Alignment.TopCenter),
+                            fontSize = 25.sp
+                        )
                         val timeseries = currentWeather.properties.timeseries.take(12)
                         Box(
                             modifier = Modifier.fillMaxSize(),

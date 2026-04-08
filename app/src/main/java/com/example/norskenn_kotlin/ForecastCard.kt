@@ -67,7 +67,7 @@ fun ForecastCard(item: ForecastItem) {
             Text(
                 text = item.symbolCode,
                 color = Color.White,
-                fontSize = 30.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
 
