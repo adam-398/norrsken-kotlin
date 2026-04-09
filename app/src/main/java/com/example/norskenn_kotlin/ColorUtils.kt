@@ -23,8 +23,7 @@ fun ColorChangingText(temperature: Double): Color {
     return when {
         fraction < 0.25f -> lerp(veryCold, cold, (fraction / 0.25f))
         fraction < 0.375f -> lerp(cold, neutral, ((fraction - 0.25f) / 0.125f))
-        fraction < 0.55f -> lerp(neutral, warm, ((fraction - 0.375f) / 0.175f))
-        fraction < 0.85f -> lerp(warm, hot, ((fraction - 0.55f) / 0.30f))
-        else -> lerp(warm, hot, 1f)
+        fraction < 0.875f -> lerp(neutral, warm, ((fraction - 0.375f) / 0.5f))
+        else -> lerp(warm, hot, ((fraction - 0.875f) / 0.125f))
     }
 }

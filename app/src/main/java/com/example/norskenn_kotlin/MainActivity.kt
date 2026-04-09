@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
                                     Color(0xFFc8dff0),
                                     Color(0xFFd8e8f0),
                                     Color(0xFFe8c99a),
-                                    Color(0xFFf0a060),
+                                    Color(0xFFFF5722),
                                 )
                             )
                         )
