@@ -52,7 +52,7 @@ fun ForecastCard(item: ForecastItem) {
             )
             Text(
                 text = "${item.temperature}°C",
-                color = Color.White,
+                color = ColorChangingText(item.temperature),
                 fontSize = 35.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
