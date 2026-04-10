@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.Instant
 
 
 /**
@@ -45,6 +48,15 @@ class WeatherViewModel : ViewModel() {
     val kpIndex: StateFlow<Int?> = _kpIndex
 
 
+    /**
+     * Sunrise and sunset time from yr.no.
+     * Null until the first successfull fetch
+     */
+    private val _sunriseSunset = MutableStateFlow<SunriseSunsetResponse?>(null)
+
+    val sunriseSunset: StateFlow<SunriseSunsetResponse?> = _sunriseSunset
+
+
 
     /**
      * Fetches weather for a given location.
@@ -74,8 +86,11 @@ class WeatherViewModel : ViewModel() {
                 _loading.value = true
                 val locationHelper = LocationHelper(context)
                 val (lat, lon) = locationHelper.getLocation()
+                val date = LocalDate.now().toString()
+                val offset = ZoneId.systemDefault().rules.getOffset(Instant.now()).toString()
                 _weather.value = repository.getWeather(lat, lon)
                 fetchKpIndex()
+                fetchSunriseSunset(lat, lon, date, offset)
             } catch (e: Exception) {
                 _error.value = e.message
             } finally {
@@ -99,4 +114,21 @@ class WeatherViewModel : ViewModel() {
             }
         }
     }
+
+    /**
+     * Fetches the sunrise and sunset times for a given location and date.
+     */
+    fun fetchSunriseSunset(lat: Double, lon: Double, date: String, offset: String) {
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                _sunriseSunset.value = repository.getSunriseSunset(lat, lon, date, offset)
+            } catch (e: Exception) {
+                _error.value = e.message
+            } finally {
+            _loading.value = false
+            }
+        }
+    }
+
 }

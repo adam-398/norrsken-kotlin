@@ -69,3 +69,26 @@ data class PrecipitationDetails(
 data class KpIndex (
     val kp_index: Int
 )
+
+/**
+ * yr.no sunrise/sunset API, nested JSON response.
+ * Each class represents one level of nesting in the JSON.
+ * Top level wrapper for the yr.no weather API response.
+ */
+data class SunriseSunsetResponse (
+    val properties: SunriseSunsetProperties
+)
+
+
+data class SunriseSunsetProperties (
+    val sunrise: SunriseTime,
+    val sunset: SunsetTime
+)
+
+data class SunriseTime (
+    val time: String
+)
+
+data class SunsetTime (
+    val time: String
+)

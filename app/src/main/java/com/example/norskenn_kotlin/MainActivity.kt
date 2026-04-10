@@ -60,6 +60,8 @@ class MainActivity : ComponentActivity() {
                 val currentWeather = weather
 
                 val kpIndex = viewModel.kpIndex.collectAsState().value
+                val sunriseSunset = viewModel.sunriseSunset.collectAsState().value
+
 
                 Box(
                     modifier = Modifier
@@ -104,7 +106,23 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .padding(top = 100.dp)
                             .align(Alignment.TopCenter),
-                            fontSize = 25.sp
+                            fontSize = 35.sp
+                        )
+                        Text (
+                            text = "Sunrise: ${formatTime(sunriseSunset?.properties?.sunrise?.time ?: "")}",
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(top = 165.dp)
+                                .align(Alignment.TopCenter),
+                            fontSize = 20.sp
+                        )
+                        Text (
+                            text = "Sunset: ${formatTime(sunriseSunset?.properties?.sunset?.time ?: "")}",
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(top = 190.dp)
+                                .align(Alignment.TopCenter),
+                            fontSize = 20.sp
                         )
                         val timeseries = currentWeather.properties.timeseries.take(12)
                         Box(

@@ -17,11 +17,12 @@ class WeatherRepository {
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .header("User-Agent", "NorsKenn/1.0 github.com/yourusername/norskenn")
+                .header("User-Agent", "Norskenn/1.0 adamhodges@live.co.uk")
                 .build()
             chain.proceed(request)
         }
         .build()
+
     /**
      * Retrofit instance for the yr.no weather API.
      * Uses the custom OkHttp client to attach the User-Agent header.
@@ -51,6 +52,7 @@ class WeatherRepository {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(AuroraAPIService::class.java)
+
     /**
      * Fetches the latest K-Index readings from NOAA.
      * Returns a flat list, take the last item for the most recent reading.
@@ -58,6 +60,21 @@ class WeatherRepository {
     suspend fun getKpIndex(): List<KpIndex> {
         return auroraAPI.getKpIndex()
     }
+
+
+    private val sunriseSunsetAPI = Retrofit.Builder()
+        .baseUrl("https://api.met.no/")
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(SunriseSunsetAPIService::class.java)
+
+    suspend fun getSunriseSunset(
+        lat: Double,
+        lon: Double,
+        date: String,
+        offset: String
+    ): SunriseSunsetResponse {
+        return sunriseSunsetAPI.getSunriseSunset(lat, lon, date, offset)
+    }
 }
-
-

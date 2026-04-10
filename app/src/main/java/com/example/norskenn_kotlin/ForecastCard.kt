@@ -80,11 +80,13 @@ fun ForecastCard(item: ForecastItem) {
 }
 
 fun formatDate(isoTime: String): String {
+    if (isoTime.isEmpty()) return ""
     val parsed = ZonedDateTime.parse(isoTime)
     return parsed.format(DateTimeFormatter.ofPattern("dd MMMM"))
 }
 
 fun formatTime(isoTime: String): String {
+    if (isoTime.isEmpty()) return ""
     val parsed = ZonedDateTime.parse(isoTime)
     return parsed.format(DateTimeFormatter.ofPattern("HH:mm"))
 }
