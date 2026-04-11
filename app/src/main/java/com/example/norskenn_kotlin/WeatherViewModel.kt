@@ -19,16 +19,27 @@ import java.time.Instant
  * The UI never touches the network directly, only ready from the state flow
  */
 class WeatherViewModel : ViewModel() {
+    /**
+     * Location name from nominatim.
+     * Null until the first successful fetch
+     */
+
+    private val _locationName = MutableStateFlow<String?>(null)
+    val locationName: StateFlow<String?> = _locationName
+    private val locationRepository = LocationNameRepository()
+
+
+
     private val repository = WeatherRepository()
     /**
      * Weather data from yr.no.
-     * Null until the first successfull fetch
+     * Null until the first successful fetch
      */
     private val _weather = MutableStateFlow<WeatherResponse?>(null)
     val weather: StateFlow<WeatherResponse?> = _weather
 
     /**
-     * Loading state, true until the first successfull fetch
+     * Loading state, true until the first successful fetch
      */
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading
@@ -55,6 +66,8 @@ class WeatherViewModel : ViewModel() {
     private val _sunriseSunset = MutableStateFlow<SunriseSunsetResponse?>(null)
 
     val sunriseSunset: StateFlow<SunriseSunsetResponse?> = _sunriseSunset
+
+
 
 
 
@@ -86,6 +99,8 @@ class WeatherViewModel : ViewModel() {
                 _loading.value = true
                 val locationHelper = LocationHelper(context)
                 val (lat, lon) = locationHelper.getLocation()
+                android.util.Log.d("Location", "lat: $lat, lon: $lon")
+                _locationName.value = locationRepository.getLocationName(lat, lon).address.village
                 val date = LocalDate.now().toString()
                 val offset = ZoneId.systemDefault().rules.getOffset(Instant.now()).toString()
                 _weather.value = repository.getWeather(lat, lon)
