@@ -1,6 +1,7 @@
 package com.example.norskenn_kotlin
 
 import android.R.attr.fontWeight
+import android.hardware.lights.Light
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -68,137 +69,138 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            Norskenn_kotlinTheme {
-                val weather = viewModel.weather.collectAsState().value
-                val loading = viewModel.loading.collectAsState().value
-                val error = viewModel.error.collectAsState().value
-                val currentWeather = weather
-
-                val kpIndex = viewModel.kpIndex.collectAsState().value
-                val sunriseSunset = viewModel.sunriseSunset.collectAsState().value
-                val locationName = viewModel.locationName.collectAsState().value
-
-                PullToRefreshBox(
-                    isRefreshing = loading,
-                    onRefresh = {
-                        android.util.Log.d("PullToRefresh", "refreshing")
-                        viewModel.fetchWeatherForCurrentLocation(this) },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFF2d3d6e),
-                                        Color(0xFF2a3d70),
-                                        Color(0xFF263878),
-                                        Color(0xFF243580),
-                                        Color(0xFF2a4080),
-                                        Color(0xFF2d4888),
-                                        Color(0xFF335a98),
-                                        Color(0xFF3d6aaa),
-                                        Color(0xFF4d7ab8),
-                                        Color(0xFF5a8abf),
-                                        Color(0xFF6a97c8),
-                                        Color(0xFF7aaad4),
-                                        Color(0xFF8abade),
-                                        Color(0xFF9abfe6),
-                                        Color(0xFFa0c4e8),
-                                        Color(0xFFb8d4f0),
-                                        Color(0xFFc8dff0),
-                                        Color(0xFFd8e8f0),
-                                        Color(0xFFe0d8c0),
-                                        Color(0xFFe8c88a),
-                                        Color(0xFFe8b060),
-                                        Color(0xFFe09050),
-                                        Color(0xFFD96746),
-                                    )
-                                )
-                            )
-                    ) {
-                        if (loading) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.BottomCenter
-                            ) {
-                                LazyColumn(
-                                    modifier = Modifier
-                                        .padding(bottom = 1.dp)
-                                        .fillMaxHeight(0.75f)
-                                ) {            items(8) {
-                                    ForecastCardSkeleton()
-                                } }
-                            }
-                        } else if (error != null) {
-                            Text("Error: $error", color = Color.White)
-                        } else if (currentWeather != null) {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = locationName ?: "Location unknown",
-                                    color = Color.White,
-                                    modifier = Modifier
-                                        .padding(top = 70.dp)
-                                        .alpha(0.9f),
-                                    fontSize = 35.sp,
-                                    fontWeight = FontWeight.Medium,
-                                )
-                                Text(
-                                    text = "Kp Index: $kpIndex",
-                                    color = Color.White,
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .alpha(0.8f),
-                                    fontSize = 27.sp,
-                                )
-                                Text(
-                                    text = "Sunrise: ${formatTime(sunriseSunset?.properties?.sunrise?.time ?: "")}",
-                                    color = Color.White,
-                                    modifier = Modifier
-                                        .padding(10.dp)
-                                        .alpha(0.8f),
-                                    fontSize = 18.sp
-                                )
-                                Text(
-                                    text = "Sunset: ${formatTime(sunriseSunset?.properties?.sunset?.time ?: "")}",
-                                    color = Color.White,
-                                    modifier = Modifier
-                                        .alpha(0.8f),
-                                    fontSize = 18.sp
-                                )
-                            }
-                            val timeseries = currentWeather.properties.timeseries.take(48)
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.BottomCenter
-                            ) {
-                                LazyColumn (
-                                    modifier = Modifier
-                                        .padding(bottom = 1.dp)
-                                        .fillMaxHeight(0.75f)
-                                ) {
-
-                                    items(timeseries) { item ->
-                                        ForecastCard(
-                                            item = ForecastItem(
-                                                time = item.time,
-                                                temperature = item.data.instant.details.air_temperature,
-                                                precipitation = item.data.next_1_hours.details.precipitation_amount,
-                                                symbolCode = item.data.next_1_hours.summary.symbol_code
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-            }
+                SunRayEffect()
+//            Norskenn_kotlinTheme {
+//                val weather = viewModel.weather.collectAsState().value
+//                val loading = viewModel.loading.collectAsState().value
+//                val error = viewModel.error.collectAsState().value
+//                val currentWeather = weather
+//
+//                val kpIndex = viewModel.kpIndex.collectAsState().value
+//                val sunriseSunset = viewModel.sunriseSunset.collectAsState().value
+//                val locationName = viewModel.locationName.collectAsState().value
+//
+//                PullToRefreshBox(
+//                    isRefreshing = loading,
+//                    onRefresh = {
+//                        android.util.Log.d("PullToRefresh", "refreshing")
+//                        viewModel.fetchWeatherForCurrentLocation(this) },
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .background(
+//                                Brush.verticalGradient(
+//                                    colors = listOf(
+//                                        Color(0xFF2d3d6e),
+//                                        Color(0xFF2a3d70),
+//                                        Color(0xFF263878),
+//                                        Color(0xFF243580),
+//                                        Color(0xFF2a4080),
+//                                        Color(0xFF2d4888),
+//                                        Color(0xFF335a98),
+//                                        Color(0xFF3d6aaa),
+//                                        Color(0xFF4d7ab8),
+//                                        Color(0xFF5a8abf),
+//                                        Color(0xFF6a97c8),
+//                                        Color(0xFF7aaad4),
+//                                        Color(0xFF8abade),
+//                                        Color(0xFF9abfe6),
+//                                        Color(0xFFa0c4e8),
+//                                        Color(0xFFb8d4f0),
+//                                        Color(0xFFc8dff0),
+//                                        Color(0xFFd8e8f0),
+//                                        Color(0xFFe0d8c0),
+//                                        Color(0xFFe8c88a),
+//                                        Color(0xFFe8b060),
+//                                        Color(0xFFe09050),
+//                                        Color(0xFFD96746),
+//                                    )
+//                                )
+//                            )
+//                    ) {
+//                        if (loading) {
+//                            Box(
+//                                modifier = Modifier.fillMaxSize(),
+//                                contentAlignment = Alignment.BottomCenter
+//                            ) {
+//                                LazyColumn(
+//                                    modifier = Modifier
+//                                        .padding(bottom = 1.dp)
+//                                        .fillMaxHeight(0.75f)
+//                                ) {            items(8) {
+//                                    ForecastCardSkeleton()
+//                                } }
+//                            }
+//                        } else if (error != null) {
+//                            Text("Error: $error", color = Color.White)
+//                        } else if (currentWeather != null) {
+//                            Column(
+//                                modifier = Modifier.fillMaxSize(),
+//                                horizontalAlignment = Alignment.CenterHorizontally
+//                            ) {
+//                                Text(
+//                                    text = locationName ?: "Location unknown",
+//                                    color = Color.White,
+//                                    modifier = Modifier
+//                                        .padding(top = 70.dp)
+//                                        .alpha(0.9f),
+//                                    fontSize = 35.sp,
+//                                    fontWeight = FontWeight.Medium,
+//                                )
+//                                Text(
+//                                    text = "Kp Index: $kpIndex",
+//                                    color = Color.White,
+//                                    modifier = Modifier
+//                                        .padding(top = 10.dp)
+//                                        .alpha(0.8f),
+//                                    fontSize = 27.sp,
+//                                )
+//                                Text(
+//                                    text = "Sunrise: ${formatTime(sunriseSunset?.properties?.sunrise?.time ?: "")}",
+//                                    color = Color.White,
+//                                    modifier = Modifier
+//                                        .padding(10.dp)
+//                                        .alpha(0.8f),
+//                                    fontSize = 18.sp
+//                                )
+//                                Text(
+//                                    text = "Sunset: ${formatTime(sunriseSunset?.properties?.sunset?.time ?: "")}",
+//                                    color = Color.White,
+//                                    modifier = Modifier
+//                                        .alpha(0.8f),
+//                                    fontSize = 18.sp
+//                                )
+//                            }
+//                            val timeseries = currentWeather.properties.timeseries.take(48)
+//                            Box(
+//                                modifier = Modifier.fillMaxSize(),
+//                                contentAlignment = Alignment.BottomCenter
+//                            ) {
+//                                LazyColumn (
+//                                    modifier = Modifier
+//                                        .padding(bottom = 1.dp)
+//                                        .fillMaxHeight(0.75f)
+//                                ) {
+//
+//                                    items(timeseries) { item ->
+//                                        ForecastCard(
+//                                            item = ForecastItem(
+//                                                time = item.time,
+//                                                temperature = item.data.instant.details.air_temperature,
+//                                                precipitation = item.data.next_1_hours.details.precipitation_amount,
+//                                                symbolCode = item.data.next_1_hours.summary.symbol_code
+//                                            )
+//                                        )
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//
+//
+//            }
         }
     }
 }
