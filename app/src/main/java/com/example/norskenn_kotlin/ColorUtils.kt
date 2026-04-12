@@ -17,13 +17,13 @@ fun ColorChangingText(temperature: Double): Color {
     val veryCold = Color(0xFF005EFF)  // deep blue at -15°C
     val cold = Color(0xFF3E7AE3)      // mid blue at -7°C
     val neutral = Color(0xFFFAFAFA)   // white at 0°C
-    val warm = Color(0xFFFFB347)  // soft amber
+    val warm = Color(0xFFF39A02)  // soft amber
     val hot = Color(0xFFEA380D)   // deep red
 
     return when {
         fraction < 0.25f -> lerp(veryCold, cold, (fraction / 0.25f))
-        fraction < 0.375f -> lerp(cold, neutral, ((fraction - 0.25f) / 0.125f))
-        fraction < 0.875f -> lerp(neutral, warm, ((fraction - 0.375f) / 0.5f))
+        fraction < 0.32f -> lerp(cold, neutral, ((fraction - 0.25f) / 0.07f))
+        fraction < 0.875f -> lerp(neutral, warm, ((fraction - 0.32f) / 0.555f))
         else -> lerp(warm, hot, ((fraction - 0.875f) / 0.125f))
     }
 }

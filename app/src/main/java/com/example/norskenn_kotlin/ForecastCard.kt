@@ -1,9 +1,14 @@
 package com.example.norskenn_kotlin
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,54 +33,73 @@ import java.time.format.DateTimeFormatter
 fun ForecastCard(item: ForecastItem) {
     Card(
         modifier = Modifier
-            .padding(10.dp)
-            .height(250.dp)
-            .width(150.dp),
-            //.alpha(0.8f),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x882a4f80))
+            .padding(4.dp)
+            .height(90.dp)
+            .fillMaxWidth(0.98f)
+            .border(2.dp, Color(0x33FFFFFF), RoundedCornerShape(8.dp)),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0x771a3060))
     ) {
-        Column(
+        Row (
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .weight(1f)
+            .padding(all = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = formatDate(item.time),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = formatTime(item.time),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+            ) {
+                Text(
+                    text = formatDate(item.time),
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .alpha(0.8f),
+                    color = Color.White,
+                    fontSize = 13.sp,
+                )
+                Text(
+                    text = formatTime(item.time),
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    color = Color.White,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
+            }
+
             Text(
                 text = "${item.temperature}°C",
                 color = ColorChangingText(item.temperature),
                 fontSize = 35.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f)
             )
-            Text(
-                text = "${item.precipitation} mm",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            AsyncImage(
-                model = "https://raw.githubusercontent.com/metno/weathericons/main/weather/png/${item.symbolCode}.png",
-                contentDescription = item.symbolCode,
-                modifier = Modifier
-                    .size(75.dp)
-            )
+            Row (
+                Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = "${item.precipitation} mm",
+                    color = Color.White,
+                    modifier = Modifier.alpha(0.6f),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Medium,
+                )
+                AsyncImage(
+                    model = "https://raw.githubusercontent.com/metno/weathericons/main/weather/png/${item.symbolCode}.png",
+                    contentDescription = item.symbolCode,
+                    modifier = Modifier
+                        .padding(start = 25.dp)
+                        .size(75.dp)
+                )
+
+            }
+
         }
     }
 
