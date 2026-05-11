@@ -100,7 +100,14 @@ class WeatherViewModel : ViewModel() {
                 val locationHelper = LocationHelper(context)
                 val (lat, lon) = locationHelper.getLocation()
                 android.util.Log.d("Location", "lat: $lat, lon: $lon")
-                _locationName.value = locationRepository.getLocationName(lat, lon).address.village
+                val locationResponse = locationRepository.getLocationName(lat, lon)
+                android.util.Log.d("LocationName", "full response: $locationResponse")
+                _locationName.value = locationResponse.address.village
+                    ?: locationResponse.address.town
+                            ?: locationResponse.address.city
+                            ?: locationResponse.address.municipality
+                            ?: locationResponse.address.county
+                            ?: "Unknown"
                 val date = LocalDate.now().toString()
                 val offset = ZoneId.systemDefault().rules.getOffset(Instant.now()).toString()
                 _weather.value = repository.getWeather(lat, lon)

@@ -37,6 +37,7 @@ fun ForecastCard(item: ForecastItem) {
             .height(90.dp)
             .fillMaxWidth(0.98f)
             .border(2.dp, Color(0x33FFFFFF), RoundedCornerShape(8.dp)),
+        //elevation = CardDefaults.cardElevation(defaultElevation = 0.1.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0x771a3060))
     ) {

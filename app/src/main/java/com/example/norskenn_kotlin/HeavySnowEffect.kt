@@ -23,34 +23,9 @@ import kotlin.math.sin
 
 @Preview(showBackground = true)
 @Composable
-fun HeavySnowEffect() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1a2a4a),
-                        Color(0xFF1e2e52),
-                        Color(0xFF22335a),
-                        Color(0xFF263860),
-                        Color(0xFF2d4070),
-                        Color(0xFF334878),
-                        Color(0xFF3a5282),
-                        Color(0xFF425d8e),
-                        Color(0xFF4a6898),
-                        Color(0xFF5272a0),
-                        Color(0xFF5a7caa),
-                        Color(0xFF6286b4),
-                        Color(0xFF6a8fba),
-                        Color(0xFF7098c0),
-                        Color(0xFF7aa4c8),
-                        Color(0xFF82aecf),
-                        Color(0xFF8ab5d4),
-                    )
-                )
-            )
-    ) {
+fun HeavySnowEffect()
+
+    {
         val infiniteTransition = rememberInfiniteTransition(label = "infinite")
         val snowEffect by infiniteTransition.animateFloat(
             initialValue = 0f,
@@ -86,6 +61,6 @@ fun HeavySnowEffect() {
             }
         }
     }
-}
+
 
 

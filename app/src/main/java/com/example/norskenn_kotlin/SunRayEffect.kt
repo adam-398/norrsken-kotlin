@@ -77,13 +77,14 @@ fun SunRayEffect() {
             val sunX = size.width / 2
             val sunY = 0f
             rays.forEach { ray ->
-                val endX = sunX + cos(Math.toRadians(ray.angle.toDouble())).toFloat() * ray.length
-                val endY = sunY + sin(Math.toRadians(ray.angle.toDouble())).toFloat() * ray.length
+                val animatedAngle = ray.angle + (sunRays * 180f)
+                val endX = sunX + cos(Math.toRadians(animatedAngle.toDouble())).toFloat() * ray.length
+                val endY = sunY + sin(Math.toRadians(animatedAngle.toDouble())).toFloat() * ray.length
                 drawLine(
                     color = Color(0x55FFE484),
                     start = Offset(sunX, sunY),
                     end = Offset(endX, endY),
-                    strokeWidth = 4f
+                    strokeWidth = 6f
                 )
             }
         }
